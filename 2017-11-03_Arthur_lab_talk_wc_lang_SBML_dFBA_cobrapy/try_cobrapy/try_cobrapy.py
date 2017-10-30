@@ -49,6 +49,8 @@ def try_cobrapy(args):
         cobra_model = cobra.io.sbml3.read_sbml_model(SBMLfile)
         print('cobra_model', cobra_model)
         print('cobra_model', cobra_model._repr_html_())
+        solution = cobra_model.optimize()
+        print(solution)
 
         time += args.time_step
 
