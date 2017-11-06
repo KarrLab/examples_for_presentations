@@ -9,16 +9,20 @@
 #     Compartment must precede Reaction
 #     Species must precede Reaction
 #     Reaction must precede ObjectiveFunction
+#     Species must precede BiomassReaction
+#     BiomassReaction must precede ObjectiveFunction
 # This partial order is satisfied by this sequence:
 # model_order = [Model, Compartment, Parameter, Species, Reaction, ObjectiveFunction]
 
 import pygraphviz as pgv
 
-nodes = "Model Compartment Parameter Species Reaction ObjectiveFunction"
+nodes = "Model Compartment Parameter Species Reaction BiomassReaction ObjectiveFunction"
 dependencies = """
 Compartment Species
 Species Reaction
-Reaction ObjectiveFunction"""
+Reaction ObjectiveFunction
+Species BiomassReaction
+BiomassReaction ObjectiveFunction"""
 
 A = pgv.AGraph(directed=True, name='blue')
 for node in nodes.split():
@@ -31,5 +35,5 @@ for line in dependencies.split('\n'):
         A.add_edge(antecedent, successor, color='red')
 
 print(A.string()) # print to screen
-A.layout() # layout with default (neato)
+A.layout(prog='dot') # layout with default (neato)
 A.draw('libSBML_class_dependencies.png') # draw png
